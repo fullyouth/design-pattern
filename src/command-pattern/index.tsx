@@ -1,7 +1,7 @@
 /**
  * 需求
  * 一个遥控控制灯泡，电视
- * todo 1.party功能 2.undo 3. 加入页面
+ * todo 2.undo
  * 1. 日志请求
  * 2. 队列请求
  */
@@ -36,6 +36,8 @@ remote.setCommand('tvOn', tvOnCommand)
 remote.setCommand('tvOff', tvOffCommand)
 remote.setCommand('lightOn', lightOnCommand)
 remote.setCommand('lightOff', lightOffCommand)
+remote.setCommand('macroOnCommand', macroOnCommand)
+remote.setCommand('macroOffCommand', macroOffCommand)
 
 remote.onButtonWasPushed('tvOn')
 remote.onButtonWasPushed('tvOff')
@@ -43,30 +45,35 @@ remote.onButtonWasPushed('lightOn')
 remote.onButtonWasPushed('lightOff')
 
 function RemoteControl(props: any) {
+  const { remote } = props
+  let buttonsRes = Object.keys(remote.buttons)
+  let buttons = buttonsRes.map(name => {
+    return {
+      name,
+      command: remote.buttons[name]
+    }
+  })
   return (
     <div>
-      {
-        props.buttons.map((button: any) => <Button key={button.name} name={button.name} command={button.command} />)
-      }
+      <p>遥控器</p>
+      <ul>
+        {buttons.map((button: any) => (
+          <li key={button.name}>
+            <Button command={() => remote.onButtonWasPushed(button.name)}>
+              {button.name}
+            </Button>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
 
 function Button(props: any) {
-  return <button onClick={props.command.execute}>{props.name}</button>
+  return <button onClick={props.command}>{props.children}</button>
 }
-const App = (props: any) => {
-  let buttonsRes = Object.keys(props.buttons)
-  let buttons = buttonsRes.map(name => {
-    return {
-      name,
-      command: props.buttons[name]
-    }
-  })
-  return <RemoteControl buttons={buttons}/>
-};
 
 ReactDom.render(
-  <App buttons={remote.buttons} />,
+  <RemoteControl remote={remote} />,
   document.getElementById('app')
 )
