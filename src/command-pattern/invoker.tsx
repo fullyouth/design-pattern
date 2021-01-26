@@ -16,6 +16,12 @@ class remoteControl {
       command.execute()
     }
   }
+  undoButtonWasPushed(slot: string) {
+    const command = this.buttons[slot]
+    if (command) {
+      command.undo()
+    }
+  }
 }
 
 export {

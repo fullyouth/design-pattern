@@ -1,4 +1,4 @@
-import { Light, TV } from './receiver'
+import { Light, TV, CeilingFan } from './receiver'
 
 export interface Command {
   execute(): void;
@@ -41,6 +41,64 @@ class TVOffCommand implements Command {
   }
 }
 
+class CeilingFanHighCommand implements Command {
+  ceilingFan: CeilingFan
+  prevSpeed: number
+  constructor(ceilingFan: CeilingFan) {
+    this.ceilingFan = ceilingFan
+  }
+  execute = (): void => {
+    this.prevSpeed = this.ceilingFan.getSpeed()
+    this.ceilingFan.setHigh()
+  }
+  undo = (): void => {
+    if (this.prevSpeed === CeilingFan.HIGH) this.ceilingFan.setHigh()
+    if (this.prevSpeed === CeilingFan.MEDIUM) this.ceilingFan.setMedium()
+    if (this.prevSpeed === CeilingFan.LOW) this.ceilingFan.setLow()
+  }
+}
+class CeilingFanMediumCommand implements Command {
+  ceilingFan: CeilingFan
+  prevSpeed: number
+  constructor(ceilingFan: CeilingFan) {
+    this.ceilingFan = ceilingFan
+  }
+  execute = (): void => {
+    this.prevSpeed = this.ceilingFan.getSpeed()
+    this.ceilingFan.setMedium()
+  }
+  undo = (): void => {
+    if (this.prevSpeed === CeilingFan.HIGH) this.ceilingFan.setHigh()
+    if (this.prevSpeed === CeilingFan.MEDIUM) this.ceilingFan.setMedium()
+    if (this.prevSpeed === CeilingFan.LOW) this.ceilingFan.setLow()
+  }
+}
+class CeilingFanLowCommand implements Command {
+  ceilingFan: CeilingFan
+  prevSpeed: number
+  constructor(ceilingFan: CeilingFan) {
+    this.ceilingFan = ceilingFan
+  }
+  execute = (): void => {
+    this.prevSpeed = this.ceilingFan.getSpeed()
+    this.ceilingFan.setLow()
+  }
+  undo = (): void => {
+    if (this.prevSpeed === CeilingFan.HIGH) this.ceilingFan.setHigh()
+    if (this.prevSpeed === CeilingFan.MEDIUM) this.ceilingFan.setMedium()
+    if (this.prevSpeed === CeilingFan.LOW) this.ceilingFan.setLow()
+  }
+}
+class CeilingFanOffCommand implements Command {
+  ceilingFan: CeilingFan
+  constructor(ceilingFan: CeilingFan) {
+    this.ceilingFan = ceilingFan
+  }
+  execute = (): void => {
+    this.ceilingFan.off()
+  }
+}
+
 class MacroCommand implements Command{
   commands: Command[]
   setMacroCommand(commands: Command[]) {
@@ -56,5 +114,9 @@ export {
   LightOffCommand,
   TVOnCommand,
   TVOffCommand,
-  MacroCommand
+  MacroCommand,
+  CeilingFanHighCommand,
+  CeilingFanMediumCommand,
+  CeilingFanLowCommand,
+  CeilingFanOffCommand
 }
