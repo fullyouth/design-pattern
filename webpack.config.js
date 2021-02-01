@@ -1,7 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
-  entry: './src/proxy-pattern/index.js',
+  entry: './src/decorator-pattern/index.tsx',
   mode: 'development',
   output: {
     path: path.resolve(__dirname, 'dist'),
