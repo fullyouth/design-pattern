@@ -21,6 +21,11 @@
     "url": "https://github.com/fullyouth/design-pattern/issues"
   },
   "homepage": "https://github.com/fullyouth/design-pattern#readme",
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
